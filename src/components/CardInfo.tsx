@@ -11,8 +11,8 @@ import { Button } from '@/components/ui/button'
 
 export function CardInfo() {
   return (
-    <article className="w-full max-w-[360px] overflow-hidden rounded-[24px] border border-border bg-card shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
-      <div className="relative h-[200px] bg-cover bg-center" aria-label="House exterior" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80')" }}>
+    <article className="w-full max-w-90 overflow-hidden rounded-[24px] border border-border bg-card shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+      <div className="relative h-50 bg-cover bg-center" aria-label="House exterior" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80')" }}>
         <Button
           type="button"
           size="icon"
@@ -61,7 +61,7 @@ export function CardInfo() {
 
       <div className="flex items-center justify-between gap-3 border-t border-slate-200 bg-slate-50/80 px-4 py-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-300 to-emerald-500 text-sm font-bold text-white">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-emerald-300 to-emerald-500 text-sm font-bold text-white">
             M
           </div>
           <div className="flex flex-col">
