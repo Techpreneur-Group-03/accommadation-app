@@ -73,7 +73,7 @@ export function SearchFilterSection({
       onOpenChange={setIsFilterOpen}
     >
       <form
-        className="flex items-center gap-0 md:gap-12"
+        className="flex items-center gap-2 md:gap-8"
         onSubmit={(event) => event.preventDefault()}
       >
         <InputGroup className="h-12.5 flex-1 rounded-full border-transparent bg-card pr-1.5 pl-6 shadow-[0_4px_16px_rgba(15,23,42,0.08)] dark:bg-card">
