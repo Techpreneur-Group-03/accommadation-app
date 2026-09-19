@@ -39,8 +39,8 @@ export function Navbar({
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
 
                 {/* Logo */}
-                <span className="text-xl font-bold">
-                    <span className="text-emerald-600">LUMN</span>
+                <span className="text-5xl font-bold">
+                    <span className="text-emerald-600">SB</span>
                     <span className="text-orange-500">O</span>
                     <span className="text-emerald-600">V</span>
                 </span>

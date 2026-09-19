@@ -9,9 +9,27 @@ import {
 
 import { Button } from '@/components/ui/button'
 
-export function CardInfo() {
+interface CardInfoProps {
+  houseName: string
+  location: string
+  numberOfRoom: number
+  pricePerRoom: number
+  rate: number
+  phoneNumber: string
+  ownerName?: string
+}
+
+export function CardInfo({
+  houseName,
+  location,
+  numberOfRoom,
+  pricePerRoom,
+  rate,
+  phoneNumber,
+  ownerName = 'Unknown',
+}: CardInfoProps) {
   return (
-    <article className="w-full max-w-90 overflow-hidden rounded-[24px] border border-border bg-card shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+    <article className="w-full max-w-90 overflow-hidden rounded-3xl border border-border bg-card shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
       <div className="relative h-50 bg-cover bg-center" aria-label="House exterior" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80')" }}>
         <Button
           type="button"
@@ -27,7 +45,7 @@ export function CardInfo() {
       <div className="space-y-4 p-4 pb-3">
         <div className="flex items-center justify-between gap-3">
           <h1 className="m-0 text-[1.1rem] font-extrabold tracking-[0.02em] text-slate-900">
-            SOPHEAP&apos;S RENTHOUSE
+            {houseName}
           </h1>
 
           <div
@@ -35,25 +53,25 @@ export function CardInfo() {
             aria-label="Rating 4.6 out of 5"
           >
             <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-            <span>4.6</span>
+            <span>{rate}</span>
           </div>
         </div>
 
         <div className="flex items-center gap-2 text-sm text-slate-500">
           <MapPin className="h-3.5 w-3.5 text-slate-400" />
-          <span>Khon Sen Sok, Phnom Penh</span>
+          <span>{location}</span>
         </div>
 
         <div className="space-y-2 border-t border-slate-200 pt-3">
           <div className="flex items-center gap-2 text-sm text-slate-600">
             <BedDouble className="h-4 w-4 text-slate-500" />
-            <span>12 rooms available</span>
+            <span>{numberOfRoom} rooms available</span>
           </div>
 
           <div className="flex items-center gap-2 text-sm text-slate-600">
             <Wallet className="h-4 w-4 text-slate-500" />
             <span>
-              Start from: <strong className="font-semibold text-slate-900">80$ / room</strong>
+              Start from: <strong className="font-semibold text-slate-900">{pricePerRoom}$ / room</strong>
             </span>
           </div>
         </div>
@@ -65,8 +83,8 @@ export function CardInfo() {
             M
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-semibold text-slate-800">Monster</span>
-            <span className="text-xs text-slate-500">012 325 555</span>
+            <span className="text-sm font-semibold text-slate-800">{ownerName}</span>
+            <span className="text-xs text-slate-500">{phoneNumber}</span>
           </div>
         </div>
 
@@ -83,3 +101,5 @@ export function CardInfo() {
     </article>
   )
 }
+
+export default CardInfo;
