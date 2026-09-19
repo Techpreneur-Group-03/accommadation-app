@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 interface CardInfoProps {
   houseName: string
@@ -17,6 +18,8 @@ interface CardInfoProps {
   rate: number
   phoneNumber: string
   ownerName?: string
+  isFavorite: boolean
+  onToggleFavorite: () => void
 }
 
 export function CardInfo({
@@ -27,24 +30,36 @@ export function CardInfo({
   rate,
   phoneNumber,
   ownerName = 'Unknown',
+  isFavorite,
+  onToggleFavorite,
 }: CardInfoProps) {
   return (
-    <article className="w-full max-w-90 overflow-hidden rounded-3xl border border-border bg-card shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+    <article className="w-full max-w-90 flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
       <div className="relative h-50 bg-cover bg-center" aria-label="House exterior" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80')" }}>
         <Button
           type="button"
           size="icon"
           variant="secondary"
-          aria-label="Save listing"
-          className="absolute top-3.5 right-3.5 h-9 w-9 rounded-full border-0 bg-white/80 text-slate-800 shadow-lg backdrop-blur-sm hover:bg-white"
+          aria-label={isFavorite ? 'Remove from favorites' : 'Save listing'}
+          aria-pressed={isFavorite}
+          onClick={onToggleFavorite}
+          className="absolute top-3.5 right-3.5 h-9 w-9 rounded-full border-0 bg-white/80 text-slate-800 shadow-lg backdrop-blur-sm transition-transform hover:bg-white active:scale-90"
         >
-          <Heart className="h-4 w-4 fill-none" />
+          <Heart
+            className={cn(
+              'h-4 w-4 transition-colors duration-200',
+              isFavorite ? 'fill-rose-500 text-rose-500' : 'fill-none',
+            )}
+          />
         </Button>
       </div>
 
-      <div className="space-y-4 p-4 pb-3">
-        <div className="flex items-center justify-between gap-3">
-          <h1 className="m-0 text-[1.1rem] font-extrabold tracking-[0.02em] text-slate-900">
+      <div className="space-y-4 p-4 pb-3 grow">
+        <div className="flex items-start justify-between gap-3">
+          <h1
+            className="m-0 line-clamp-2 min-h-[2lh] text-[1.1rem] font-extrabold tracking-[0.02em] text-slate-900"
+            title={houseName}
+          >
             {houseName}
           </h1>
 

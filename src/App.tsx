@@ -3,11 +3,14 @@ import { Navbar } from "@/components/navbar"
 import { SearchFilterSection } from "@/sections/search-filter-section"
 import { CardListingSection } from "@/sections/CardListingSection"
 import Footer from "@/sections/Footer"
-import { emptySearchFilters } from "@/lib/filter-houses"
+import houses from "@/data/sample-data"
+import { emptySearchFilters, filterHouses } from "@/lib/filter-houses"
 
 export function App() {
   const [tab, setTab] = useState("home")
   const [filters, setFilters] = useState(emptySearchFilters)
+  const filteredHouses = filterHouses(houses, filters)
+
   return (
     <div>
       <Navbar
@@ -25,7 +28,7 @@ export function App() {
       </div>
 
       <div className="container mx-auto px-24 py-12">
-        <CardListingSection />
+        <CardListingSection houses={filteredHouses} />
       </div>
 
       <Footer />

@@ -36,10 +36,10 @@ export function Navbar({
 }: NavbarProps) {
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
-            <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+            <div className="mx-auto flex min-h-18 max-w-7xl items-center justify-between px-4 sm:px-6">
 
                 {/* Logo */}
-                <span className="text-5xl font-bold">
+                <span className="text-3xl font-bold">
                     <span className="text-emerald-600">SB</span>
                     <span className="text-orange-500">O</span>
                     <span className="text-emerald-600">V</span>
