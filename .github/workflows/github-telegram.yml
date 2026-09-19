@@ -1,4 +1,4 @@
-name: GitHub Activity → Telegram
+name: Telegram GitHub Notification
 
 on:
   push:
@@ -8,32 +8,25 @@ on:
   pull_request_review:
   pull_request_review_comment:
   release:
-  create:
-  delete:
-  fork:
-  watch:
-  workflow_run:
-  deployment:
-  deployment_status:
 
 jobs:
   notify:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send GitHub activity to Telegram
+      - name: Send Telegram notification
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_THREAD_ID: ${{ secrets.TELEGRAM_THREAD_ID }}
         run: |
           MESSAGE="🔔 GitHub Activity
 
           Repository: ${{ github.repository }}
           Event: ${{ github.event_name }}
-          Actor: ${{ github.actor }}
-          Branch: ${{ github.ref_name }}
+          User: ${{ github.actor }}
 
-          View: https://github.com/${{ github.repository }}"
+          https://github.com/${{ github.repository }}"
 
           curl -s -X POST \
             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
