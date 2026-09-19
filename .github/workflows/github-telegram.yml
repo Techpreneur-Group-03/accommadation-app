@@ -22,20 +22,21 @@ jobs:
           TELEGRAM_THREAD_ID: ${{ secrets.TELEGRAM_THREAD_ID }}
           REPOSITORY: ${{ github.repository }}
           BRANCH: ${{ github.head_ref || github.ref_name || 'N/A' }}
-          EVENT: ${{ github.event_name }}
           USER: ${{ github.actor }}
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message || github.event.pull_request.title || 'N/A' }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message || github.event.pull_request.title || github.event.issue.title || github.event.release.name || 'N/A' }}
           EVENT_URL: ${{ github.event.head_commit.url || github.event.pull_request.html_url || github.event.issue.html_url || github.event.release.html_url || github.server_url }}
+          COMMIT_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
 
-          MESSAGE=$(printf '🔔 GitHub Activity\n\nRepository: %s\nBranch: %s\nEvent: %s\nUser: %s\nCommit message: %s\n\n%s' \
+          SHORT_SHA="${COMMIT_SHA:0:7}"
+
+          MESSAGE=$(printf '🔔 %s\n🌿 %s • 👤 %s\n\nCommit: %s\n\n🔗 %s' \
             "$REPOSITORY" \
             "$BRANCH" \
-            "$EVENT" \
             "$USER" \
             "$COMMIT_MESSAGE" \
-            "$EVENT_URL")
+            "$SHORT_SHA")
 
           curl --fail --silent --show-error -X POST \
             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
