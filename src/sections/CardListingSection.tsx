@@ -1,7 +1,11 @@
 import { CardInfo } from '@/components/CardInfo'
-import houses from '@/data/sample-data'
+import type { House } from '@/data/sample-data'
 
-export function CardListingSection() {
+interface CardListingSectionProps {
+  houses: House[]
+}
+
+export function CardListingSection({ houses }: CardListingSectionProps) {
   return (
     <section className="w-full" aria-label="Accommodation listings">
       <div className="mb-6 flex items-center justify-between">
