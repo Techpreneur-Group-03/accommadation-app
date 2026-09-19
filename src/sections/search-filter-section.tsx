@@ -74,7 +74,7 @@ export function SearchFilterSection() {
             <Label htmlFor={id} className="text-base font-medium">
               {label}
             </Label>
-            <InputGroup className="h-auto rounded-field border-transparent bg-muted px-4 py-3 shadow-none dark:bg-muted">
+            <InputGroup className="h-auto rounded-field border-transparent bg-muted px-4 py-3 shadow-md dark:bg-muted">
               <InputGroupAddon className="p-0 pr-1">
                 <Icon className="size-5" />
               </InputGroupAddon>
@@ -92,3 +92,5 @@ export function SearchFilterSection() {
     </section>
   )
 }
+
+export default SearchFilterSection;
