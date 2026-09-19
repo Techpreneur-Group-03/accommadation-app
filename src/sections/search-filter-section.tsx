@@ -137,3 +137,5 @@ export function SearchFilterSection({
     </Collapsible>
   )
 }
+
+export default SearchFilterSection;
