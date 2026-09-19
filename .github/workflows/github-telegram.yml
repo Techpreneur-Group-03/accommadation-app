@@ -20,18 +20,24 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_THREAD_ID: ${{ secrets.TELEGRAM_THREAD_ID }}
+          REPOSITORY: ${{ github.repository }}
+          BRANCH: ${{ github.head_ref || github.ref_name || 'N/A' }}
+          EVENT: ${{ github.event_name }}
+          USER: ${{ github.actor }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message || github.event.pull_request.title || 'N/A' }}
+          EVENT_URL: ${{ github.event.head_commit.url || github.event.pull_request.html_url || github.event.issue.html_url || github.event.release.html_url || github.server_url }}
         run: |
           set -euo pipefail
 
-          MESSAGE="🔔 GitHub Activity
+          MESSAGE=$(printf '🔔 GitHub Activity\n\nRepository: %s\nBranch: %s\nEvent: %s\nUser: %s\nCommit message: %s\n\n%s' \
+            "$REPOSITORY" \
+            "$BRANCH" \
+            "$EVENT" \
+            "$USER" \
+            "$COMMIT_MESSAGE" \
+            "$EVENT_URL")
 
-          Repository: ${{ github.repository }}
-          Event: ${{ github.event_name }}
-          User: ${{ github.actor }}
-
-          https://github.com/${{ github.repository }}"
-
-          curl --fail-with-body --show-error -X POST \
+          curl --fail --silent --show-error -X POST \
             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
             --data-urlencode "text=${MESSAGE}" \
