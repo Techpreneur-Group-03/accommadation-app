@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import {
   CircleDollarSign,
   MapPin,
@@ -60,12 +60,18 @@ export function SearchFilterSection({
   onFiltersChange,
 }: SearchFilterSectionProps) {
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   const updateFilter = (key: keyof SearchFilters, value: string) =>
     onFiltersChange({ ...filters, [key]: value })
 
   return (
-    <Collapsible render={<section />} className="flex w-full flex-col">
+    <Collapsible
+      render={<section />}
+      className="flex w-full flex-col"
+      open={isFilterOpen}
+      onOpenChange={setIsFilterOpen}
+    >
       <form
         className="flex items-center gap-0 md:gap-12"
         onSubmit={(event) => event.preventDefault()}
@@ -80,7 +86,10 @@ export function SearchFilterSection({
             value={filters.query}
             onChange={(event) => updateFilter("query", event.target.value)}
           />
-          <InputGroupAddon align="inline-end" className="p-0 has-[>button]:mr-0">
+          <InputGroupAddon
+            align="inline-end"
+            className="p-0 has-[>button]:mr-0"
+          >
             <InputGroupButton
               type="submit"
               size="icon-sm"
@@ -110,27 +119,34 @@ export function SearchFilterSection({
       <CollapsibleContent className="-mx-2 -mb-4 h-(--collapsible-panel-height) overflow-hidden transition-[height] duration-200 ease-out data-ending-style:h-0 data-starting-style:h-0">
         <div className="px-2 pt-3.5 pb-4">
           <Card className="grid grid-cols-1 gap-x-9 gap-y-5 rounded-2xl px-7 py-6 shadow-[0_4px_20px_rgba(15,23,42,0.06)] ring-0 md:grid-cols-3">
-            {filterFields.map(({ id, key, label, placeholder, icon: Icon, type }) => (
-              <div key={id} className="flex flex-col gap-3">
-                <Label htmlFor={id} className="text-[15px] font-normal text-foreground/80">
-                  {label}
-                </Label>
-                <InputGroup className="h-11.5 rounded-lg border-transparent bg-muted/70 px-3.5 shadow-none dark:bg-muted">
-                  <InputGroupAddon className="p-0 pr-1">
-                    <Icon className="size-4 text-muted-foreground/80" />
-                  </InputGroupAddon>
-                  <InputGroupInput
-                    id={id}
-                    type={type}
-                    min={type === "number" ? 0 : undefined}
-                    placeholder={placeholder}
-                    className="h-full py-0 pr-0 text-sm placeholder:text-muted-foreground/70"
-                    value={filters[key]}
-                    onChange={(event) => updateFilter(key, event.target.value)}
-                  />
-                </InputGroup>
-              </div>
-            ))}
+            {filterFields.map(
+              ({ id, key, label, placeholder, icon: Icon, type }) => (
+                <div key={id} className="flex flex-col gap-3">
+                  <Label
+                    htmlFor={id}
+                    className="text-[15px] font-normal text-foreground/80"
+                  >
+                    {label}
+                  </Label>
+                  <InputGroup className="h-11.5 rounded-lg border-transparent bg-muted/70 px-3.5 shadow-none dark:bg-muted">
+                    <InputGroupAddon className="p-0 pr-1">
+                      <Icon className="size-4 text-muted-foreground/80" />
+                    </InputGroupAddon>
+                    <InputGroupInput
+                      id={id}
+                      type={type}
+                      min={type === "number" ? 0 : undefined}
+                      placeholder={placeholder}
+                      className="h-full py-0 pr-0 text-sm placeholder:text-muted-foreground/70"
+                      value={filters[key]}
+                      onChange={(event) =>
+                        updateFilter(key, event.target.value)
+                      }
+                    />
+                  </InputGroup>
+                </div>
+              )
+            )}
           </Card>
         </div>
       </CollapsibleContent>
@@ -138,4 +154,4 @@ export function SearchFilterSection({
   )
 }
 
-export default SearchFilterSection;
+export default SearchFilterSection

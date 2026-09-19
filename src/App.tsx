@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { Navbar } from "@/components/navbar";
-import { SearchFilterSection } from "@/sections/search-filter-section";
-import { CardListingSection } from "@/sections/CardListingSection";
-import Footer from "@/sections/Footer";
+import { useState } from "react"
+import { Navbar } from "@/components/navbar"
+import { SearchFilterSection } from "@/sections/search-filter-section"
+import { CardListingSection } from "@/sections/CardListingSection"
+import Footer from "@/sections/Footer"
+import { emptySearchFilters } from "@/lib/filter-houses"
 
 export function App() {
-
-  const [tab, setTab] = useState("home");
+  const [tab, setTab] = useState("home")
+  const [filters, setFilters] = useState(emptySearchFilters)
   return (
     <div>
       <Navbar
@@ -19,11 +20,11 @@ export function App() {
         onProfileClick={() => alert("profile!")}
       />
 
-      <div className="container mx-auto p-24">
-        <SearchFilterSection />
+      <div className="container mx-auto px-24 pt-8">
+        <SearchFilterSection filters={filters} onFiltersChange={setFilters} />
       </div>
 
-      <div className="container mx-auto py-12 px-24">
+      <div className="container mx-auto px-24 py-12">
         <CardListingSection />
       </div>
 
