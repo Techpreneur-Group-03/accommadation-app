@@ -1,17 +1,20 @@
+import { Link } from "react-router-dom"
 import {
+  ArrowRight,
   BedDouble,
   Heart,
   MapPin,
   Phone,
   Star,
   Wallet,
-} from 'lucide-react'
+} from "lucide-react"
 
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button"
 
-import { cn } from '@/lib/utils'
+import { cn } from "@/lib/utils"
 
 interface CardInfoProps {
+  houseId: number
   houseName: string
   location: string
   numberOfRoom: number
@@ -25,6 +28,7 @@ interface CardInfoProps {
 }
 
 export function CardInfo({
+  houseId,
   houseName,
   location,
   numberOfRoom,
@@ -32,12 +36,12 @@ export function CardInfo({
   rate,
   phoneNumber,
   houseImage,
-  ownerName = 'Unknown',
+  ownerName = "Unknown",
   isFavorite,
   onToggleFavorite,
 }: CardInfoProps) {
   return (
-    <article className="w-full max-w-90 flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
+    <article className="group flex w-full max-w-90 flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-[0_18px_40px_rgba(15,23,42,0.08)] transition-shadow hover:shadow-[0_18px_40px_rgba(15,23,42,0.16)]">
       <div className="relative h-50 shrink-0 overflow-hidden bg-slate-200">
         <img
           src={houseImage}
@@ -46,35 +50,41 @@ export function CardInfo({
           decoding="async"
           onError={(event) => {
             const img = event.currentTarget
-            if (img.src !== "https://via.placeholder.com/400x300?text=No+Image") img.src = "https://via.placeholder.com/400x300?text=No+Image"
+            if (img.src !== "https://via.placeholder.com/400x300?text=No+Image")
+              img.src = "https://via.placeholder.com/400x300?text=No+Image"
           }}
           className="h-full w-full object-cover"
+        />
+        <Link
+          to={`/house/${houseId}`}
+          aria-label={`View details for ${houseName}`}
+          className="absolute inset-0"
         />
         <Button
           type="button"
           size="icon"
           variant="secondary"
-          aria-label={isFavorite ? 'Remove from favorites' : 'Save listing'}
+          aria-label={isFavorite ? "Remove from favorites" : "Save listing"}
           aria-pressed={isFavorite}
           onClick={onToggleFavorite}
-          className="absolute top-3.5 right-3.5 h-9 w-9 rounded-full border-0 bg-white/80 text-slate-800 shadow-lg backdrop-blur-sm transition-transform hover:bg-white active:scale-90"
+          className="absolute top-3.5 right-3.5 z-10 h-9 w-9 rounded-full border-0 bg-white/80 text-slate-800 shadow-lg backdrop-blur-sm transition-transform hover:bg-white active:scale-90"
         >
           <Heart
             className={cn(
-              'h-4 w-4 transition-colors duration-200',
-              isFavorite ? 'fill-rose-500 text-rose-500' : 'fill-none',
+              "h-4 w-4 transition-colors duration-200",
+              isFavorite ? "fill-rose-500 text-rose-500" : "fill-none"
             )}
           />
         </Button>
       </div>
 
-      <div className="space-y-4 p-4 pb-3 grow">
+      <div className="grow space-y-4 p-4 pb-3">
         <div className="flex items-start justify-between gap-3">
           <h1
-            className="m-0 line-clamp-2 min-h-[2lh] text-[1.1rem] font-extrabold tracking-[0.02em] text-slate-900"
+            className="m-0 line-clamp-2 min-h-[2lh] text-[1.1rem] font-extrabold tracking-[0.02em] text-slate-900 group-hover:text-brand"
             title={houseName}
           >
-            {houseName}
+            <Link to={`/house/${houseId}`}>{houseName}</Link>
           </h1>
 
           <div
@@ -100,7 +110,10 @@ export function CardInfo({
           <div className="flex items-center gap-2 text-sm text-slate-600">
             <Wallet className="h-4 w-4 text-slate-500" />
             <span>
-              Start from: <strong className="font-semibold text-slate-900">{pricePerRoom}$ / room</strong>
+              Start from:{" "}
+              <strong className="font-semibold text-slate-900">
+                {pricePerRoom}$ / room
+              </strong>
             </span>
           </div>
         </div>
@@ -112,7 +125,9 @@ export function CardInfo({
             M
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-semibold text-slate-800">{ownerName}</span>
+            <span className="text-sm font-semibold text-slate-800">
+              {ownerName}
+            </span>
             <span className="text-xs text-slate-500">{phoneNumber}</span>
           </div>
         </div>
@@ -127,8 +142,16 @@ export function CardInfo({
           <Phone className="h-4 w-4" />
         </Button>
       </div>
+
+      <Link
+        to={`/house/${houseId}`}
+        className="flex items-center justify-center gap-1.5 border-t border-slate-200 bg-slate-50/80 px-4 py-3 text-sm font-bold text-slate-800 transition-colors hover:bg-emerald-600 hover:text-white"
+      >
+        View {numberOfRoom} rooms
+        <ArrowRight className="h-4 w-4" />
+      </Link>
     </article>
   )
 }
 
-export default CardInfo;
+export default CardInfo
