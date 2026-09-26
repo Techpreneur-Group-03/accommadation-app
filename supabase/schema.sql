@@ -10,16 +10,29 @@ create table if not exists public.houses (
   price_per_room numeric(10, 2) not null,
   rate numeric(3, 2) not null,
   phone_number text not null,
+  house_image text not null default '',
   created_at timestamptz not null default now()
 );
 
 -- Seed the sample data. Safe to run more than once.
+-- house_image follows src/lib/house-images.ts: photo = list[house_id % 18].
 insert into public.houses (
   house_id, house_name, owner_name, location, number_of_room,
-  people_per_room, price_per_room, rate, phone_number
+  people_per_room, price_per_room, rate, phone_number, house_image
 )
-values
-  (1, 'Sunrise Residence', 'Sok Dara', 'Phnom Penh', 12, 2, 250, 4.5, '012 345 678'),
+select
+  seed.house_id, seed.house_name, seed.owner_name, seed.location, seed.number_of_room,
+  seed.people_per_room, seed.price_per_room, seed.rate, seed.phone_number,
+  'https://images.unsplash.com/photo-' || (array[
+    '1512917774080-9991f1c4c750', '1560448204-e02f11c3d0e2', '1568605114967-8130f3a36994',
+    '1570129477492-45c003edd2be', '1580587771525-78b9dba3b914', '1600585154340-be6161a56a0c',
+    '1600596542815-ffad4c1539a9', '1600607687939-ce8a6c25118c', '1493809842364-78817add7ffb',
+    '1522708323590-d24dbb6b0267', '1449844908441-8829872d2607', '1583608205776-bfd35f0d9f83',
+    '1512915922686-57c11dde9b6b', '1554995207-c18c203602cb', '1484154218962-a197022b5858',
+    '1605276374104-dee2a0ed3cd6', '1586023492125-27b2c045efd7', '1502005229762-cf1b2da7c5d6'
+  ])[(seed.house_id % 18) + 1] || '?auto=format&fit=crop&w=900&q=80'
+from (values
+  (1::bigint, 'Sunrise Residence', 'Sok Dara', 'Phnom Penh', 12, 2, 250, 4.5, '012 345 678'),
   (2, 'Green Garden House', 'Chan Sopheap', 'Siem Reap', 8, 3, 180, 4.2, '097 234 567'),
   (3, 'Mekong View Residence', 'Lim Vannak', 'Phnom Penh', 15, 2, 320, 4.7, '010 456 789'),
   (4, 'Royal Garden Apartments', 'Keo Sreymom', 'Battambang', 10, 4, 200, 4.3, '088 567 890'),
@@ -29,6 +42,7 @@ values
   (8, 'Angkor Comfort House', 'Ly Chenda', 'Siem Reap', 7, 2, 220, 4.4, '092 901 234'),
   (9, 'Riverside Residence', 'Nget Visal', 'Kampong Cham', 11, 4, 190, 4.0, '078 012 345'),
   (10, 'Golden Home', 'Pich Sreyneang', 'Takhmao', 14, 3, 280, 4.6, '069 123 456')
+) as seed(house_id, house_name, owner_name, location, number_of_room, people_per_room, price_per_room, rate, phone_number)
 on conflict (house_id) do nothing;
 
 -- Read access for the publishable key client (anon role).
