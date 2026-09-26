@@ -11,6 +11,7 @@ import {
 
 import { Button } from "@/components/ui/button"
 
+import { FALLBACK_HOUSE_IMAGE } from "@/lib/house-images"
 import { cn } from "@/lib/utils"
 
 interface CardInfoProps {
@@ -19,9 +20,9 @@ interface CardInfoProps {
   location: string
   numberOfRoom: number
   pricePerRoom: number
-  rate: number
+  rate?: number
   phoneNumber: string
-  houseImage: string
+  houseImage?: string
   ownerName?: string
   isFavorite: boolean
   onToggleFavorite: () => void
@@ -35,13 +36,15 @@ export function CardInfo({
   pricePerRoom,
   rate,
   phoneNumber,
-  houseImage,
+  houseImage = FALLBACK_HOUSE_IMAGE,
   ownerName = "Unknown",
   isFavorite,
   onToggleFavorite,
 }: CardInfoProps) {
+  const href = `/listings/${houseId}`
+
   return (
-    <article className="group flex w-full max-w-90 flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-[0_18px_40px_rgba(15,23,42,0.08)] transition-shadow hover:shadow-[0_18px_40px_rgba(15,23,42,0.16)]">
+    <article className="relative flex w-full max-w-90 flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-[0_18px_40px_rgba(15,23,42,0.08)] transition-shadow has-[a:hover]:shadow-[0_18px_40px_rgba(15,23,42,0.16)]">
       <div className="relative h-50 shrink-0 overflow-hidden bg-slate-200">
         <img
           src={houseImage}
@@ -50,15 +53,9 @@ export function CardInfo({
           decoding="async"
           onError={(event) => {
             const img = event.currentTarget
-            if (img.src !== "https://via.placeholder.com/400x300?text=No+Image")
-              img.src = "https://via.placeholder.com/400x300?text=No+Image"
+            if (img.src !== FALLBACK_HOUSE_IMAGE) img.src = FALLBACK_HOUSE_IMAGE
           }}
           className="h-full w-full object-cover"
-        />
-        <Link
-          to={`/house/${houseId}`}
-          aria-label={`View details for ${houseName}`}
-          className="absolute inset-0"
         />
         <Button
           type="button"
@@ -81,19 +78,27 @@ export function CardInfo({
       <div className="grow space-y-4 p-4 pb-3">
         <div className="flex items-start justify-between gap-3">
           <h1
-            className="m-0 line-clamp-2 min-h-[2lh] text-[1.1rem] font-extrabold tracking-[0.02em] text-slate-900 group-hover:text-brand"
+            className="m-0 line-clamp-2 min-h-[2lh] text-[1.1rem] font-extrabold tracking-[0.02em] text-slate-900"
             title={houseName}
           >
-            <Link to={`/house/${houseId}`}>{houseName}</Link>
+            {/* Stretched link: covers the card; buttons sit above it (z-10). */}
+            <Link
+              to={href}
+              className="outline-none after:absolute after:inset-0 after:rounded-3xl hover:underline focus-visible:after:ring-3 focus-visible:after:ring-brand/50"
+            >
+              {houseName}
+            </Link>
           </h1>
 
-          <div
-            className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1.5 text-xs font-bold text-slate-800"
-            aria-label="Rating 4.6 out of 5"
-          >
-            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-            <span>{rate}</span>
-          </div>
+          {rate !== undefined && (
+            <div
+              className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1.5 text-xs font-bold text-slate-800"
+              aria-label={`Rating ${rate} out of 5`}
+            >
+              <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+              <span>{rate}</span>
+            </div>
+          )}
         </div>
 
         <div className="flex items-center gap-2 text-sm text-slate-500">
@@ -137,15 +142,16 @@ export function CardInfo({
           size="icon"
           variant="outline"
           aria-label="Contact host"
-          className="h-10 w-10 rounded-full border-slate-200 bg-white text-slate-700 hover:bg-slate-100"
+          className="relative z-10 h-10 w-10 rounded-full border-slate-200 bg-white text-slate-700 hover:bg-slate-100"
         >
           <Phone className="h-4 w-4" />
         </Button>
       </div>
 
       <Link
-        to={`/house/${houseId}`}
-        className="flex items-center justify-center gap-1.5 border-t border-slate-200 bg-slate-50/80 px-4 py-3 text-sm font-bold text-slate-800 transition-colors hover:bg-emerald-600 hover:text-white"
+        to={href}
+        tabIndex={-1}
+        className="relative z-10 flex items-center justify-center gap-1.5 border-t border-slate-200 bg-slate-50/80 px-4 py-3 text-sm font-bold text-slate-800 transition-colors hover:bg-emerald-600 hover:text-white"
       >
         View {numberOfRoom} rooms
         <ArrowRight className="h-4 w-4" />

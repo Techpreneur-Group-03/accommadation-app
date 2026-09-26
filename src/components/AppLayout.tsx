@@ -1,40 +1,14 @@
 import { Outlet } from "react-router-dom"
 
-import { useAuth } from "@/components/auth-provider"
-import { Navbar } from "@/components/navbar"
+import { SiteNavbar } from "@/components/site-navbar"
 import Footer from "@/sections/Footer"
 
-function getInitials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0].toUpperCase())
-    .join("")
-}
-
+// Shared shell for browsing pages that need the navbar and footer, such as the
+// house detail page. The home page renders its own shell.
 export function AppLayout() {
-  const { session, user, profile, signOut } = useAuth()
-  const userName = profile?.fullName ?? user?.email ?? ""
-
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar
-        activeTab="home"
-        notificationCount={3}
-        messageCount={2}
-        onNotificationClick={() => alert("notifications!")}
-        onMessageClick={() => alert("messages!")}
-        isAuthenticated={session !== null}
-        userName={profile?.fullName ?? undefined}
-        userEmail={user?.email}
-        userInitials={getInitials(userName)}
-        onLogout={() => {
-          signOut().catch((err: unknown) =>
-            console.error("Failed to log out:", err)
-          )
-        }}
-      />
+      <SiteNavbar />
 
       <div className="grow">
         <Outlet />

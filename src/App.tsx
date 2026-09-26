@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
-import { Navbar } from "@/components/navbar"
+import { SiteNavbar } from "@/components/site-navbar"
 import { SearchFilterSection } from "@/sections/search-filter-section"
 import { CardListingSection } from "@/sections/CardListingSection"
 import Footer from "@/sections/Footer"
 import { emptySearchFilters, filterHouses } from "@/lib/filter-houses"
 import { fetchHouses } from "@/services/houses"
-import type { House } from "@/data/sample-data"
+import type { House } from "@/types/house-type"
 import { FavoritePage } from "@/pages/FavoritePage"
 
 export function App() {
@@ -39,7 +39,9 @@ export function App() {
   }, [])
 
   const filteredHouses = filterHouses(houses, filters)
-  const favoriteHouses = houses.filter((house) => favoriteIds.has(house.houseId))
+  const favoriteHouses = houses.filter((house) =>
+    favoriteIds.has(house.houseId)
+  )
 
   const toggleFavorite = (houseId: number) => {
     setFavoriteIds((prev) => {
@@ -52,22 +54,10 @@ export function App() {
       return next
     })
   }
-import { Route, Routes } from "react-router-dom"
 
-import { AppLayout } from "@/components/AppLayout"
-import { HouseDetailPage } from "@/pages/HouseDetailPage"
-import { HomePage } from "@/pages/HomePage"
-import { NotFoundPage } from "@/pages/NotFoundPage"
-
-export function App() {
   return (
     <div>
-      <Navbar
-        activeTab={tab}
-        onTabChange={setTab}
-        notificationCount={3}
-        messageCount={2}
-      />
+      <SiteNavbar activeTab={tab} onTabChange={setTab} />
 
       {tab === "favorite" ? (
         <div className="container mx-auto px-24 py-12">
@@ -80,12 +70,17 @@ export function App() {
       ) : (
         <>
           <div className="container mx-auto px-24 pt-8">
-            <SearchFilterSection filters={filters} onFiltersChange={setFilters} />
+            <SearchFilterSection
+              filters={filters}
+              onFiltersChange={setFilters}
+            />
           </div>
 
           <div className="container mx-auto px-24 py-12">
             {isLoading ? (
-              <p className="py-16 text-center text-slate-500">Loading listings...</p>
+              <p className="py-16 text-center text-slate-500">
+                Loading listings...
+              </p>
             ) : error ? (
               <div role="alert" className="py-16 text-center">
                 <p className="text-lg font-semibold text-slate-900">
@@ -106,13 +101,6 @@ export function App() {
 
       <Footer />
     </div>
-    <Routes>
-      <Route element={<AppLayout />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/house/:houseId" element={<HouseDetailPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Route>
-    </Routes>
   )
 }
 

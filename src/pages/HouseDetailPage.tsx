@@ -95,13 +95,15 @@ function HouseOverview({ house }: { house: House }) {
             <h1 className="text-3xl font-extrabold tracking-[0.02em] text-slate-900">
               {house.houseName}
             </h1>
-            <span
-              className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1.5 text-xs font-bold text-slate-800"
-              aria-label={`Rating ${house.rate} out of 5`}
-            >
-              <Star className="size-3.5 fill-amber-400 text-amber-400" />
-              {house.rate}
-            </span>
+            {house.rate !== undefined && (
+              <span
+                className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1.5 text-xs font-bold text-slate-800"
+                aria-label={`Rating ${house.rate} out of 5`}
+              >
+                <Star className="size-3.5 fill-amber-400 text-amber-400" />
+                {house.rate}
+              </span>
+            )}
           </div>
 
           <p className="flex items-center gap-2 text-slate-500">

@@ -1,7 +1,7 @@
 import { Heart, SearchX } from "lucide-react"
 
 import { CardInfo } from "@/components/CardInfo"
-import type { House } from "@/data/sample-data"
+import type { House } from "@/types/house-type"
 
 interface FavoritePageProps {
     houses: House[]
@@ -43,12 +43,14 @@ export function FavoritePage({ houses, favoriteIds, onToggleFavorite }: Favorite
                     {houses.map((house) => (
                         <CardInfo
                             key={house.houseId}
+                            houseId={house.houseId}
                             houseName={house.houseName}
                             location={house.location}
                             numberOfRoom={house.numberOfRoom}
                             pricePerRoom={house.pricePerRoom}
                             rate={house.rate}
                             phoneNumber={house.phoneNumber}
+                            houseImage={house.houseImage}
                             ownerName={house.ownerName}
                             isFavorite={favoriteIds.has(house.houseId)}
                             onToggleFavorite={() => onToggleFavorite(house.houseId)}

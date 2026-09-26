@@ -1,44 +1,49 @@
 import type { House } from "@/types/house-type"
 
+import { houseImageFor } from "@/lib/house-images"
 import { supabase } from "@/lib/supabase"
+import { imageUrl } from "@/services/listings"
 
-interface HouseRow {
-  house_id: number
+// A row of the house_listings view: published houses with at least one
+// available room, from every owner.
+interface HouseListingRow {
+  id: number
   house_name: string
-  owner_name: string
   location: string
-  number_of_room: number
-  people_per_room: number
-  price_per_room: number
-  rate: number
-  phone_number: string
-  house_image: string | null
+  owner_name: string | null
+  phone_number: string | null
+  available_rooms: number
+  price_from: number
+  max_people_per_room: number
+  cover_image_path: string | null
 }
 
-const HOUSE_COLUMNS =
-  "house_id, house_name, owner_name, location, number_of_room, people_per_room, price_per_room, rate, phone_number, house_image"
+const HOUSE_LISTING_COLUMNS =
+  "id, house_name, location, owner_name, phone_number, available_rooms, price_from, max_people_per_room, cover_image_path"
 
-function toHouse(row: HouseRow): House {
+function toHouse(row: HouseListingRow): House {
   return {
-    houseId: Number(row.house_id),
+    houseId: row.id,
     houseName: row.house_name,
-    ownerName: row.owner_name,
+    ownerName: row.owner_name ?? "Unknown",
     location: row.location,
-    numberOfRoom: Number(row.number_of_room),
-    peoplePerRoom: Number(row.people_per_room),
-    pricePerRoom: Number(row.price_per_room),
-    rate: Number(row.rate),
-    phoneNumber: row.phone_number,
-    houseImage:
-      row.house_image || "https://via.placeholder.com/400x300?text=No+Image",
+    numberOfRoom: row.available_rooms,
+    peoplePerRoom: row.max_people_per_room,
+    pricePerRoom: row.price_from,
+    phoneNumber: row.phone_number ?? "",
+    // Owner-uploaded cover photo, else a stock photo picked by id.
+    houseImage: row.cover_image_path
+      ? imageUrl(row.cover_image_path)
+      : houseImageFor(row.id),
   }
 }
 
 export async function fetchHouses(): Promise<House[]> {
   const { data, error } = await supabase
-    .from("houses")
-    .select(HOUSE_COLUMNS)
-    .order("house_id", { ascending: true })
+    .from("house_listings")
+    .select(HOUSE_LISTING_COLUMNS)
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: true })
 
   if (error) {
     throw new Error(error.message)
@@ -49,9 +54,9 @@ export async function fetchHouses(): Promise<House[]> {
 
 export async function fetchHouseById(houseId: number): Promise<House | null> {
   const { data, error } = await supabase
-    .from("houses")
-    .select(HOUSE_COLUMNS)
-    .eq("house_id", houseId)
+    .from("house_listings")
+    .select(HOUSE_LISTING_COLUMNS)
+    .eq("id", houseId)
     .maybeSingle()
 
   if (error) {

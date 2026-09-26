@@ -33,7 +33,11 @@ export function FormField({
       </Label>
       {children}
       {error && (
-        <p id={errorId(id)} className="text-xs text-destructive">
+        <p
+          id={errorId(id)}
+          data-field-error
+          className="text-xs text-destructive"
+        >
           {error}
         </p>
       )}

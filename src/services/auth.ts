@@ -13,6 +13,7 @@ const emailRedirectTo = () => `${window.location.origin}/login`
 
 export interface Profile {
   fullName: string | null
+  phoneNumber: string | null
   role: AppRole
 }
 
@@ -120,7 +121,7 @@ export async function getUser(): Promise<User> {
 export async function fetchProfile(userId: string): Promise<Profile> {
   const { data, error } = await supabase
     .from("profiles")
-    .select("full_name, role")
+    .select("full_name, phone_number, role")
     .eq("id", userId)
     .single()
 
@@ -128,7 +129,11 @@ export async function fetchProfile(userId: string): Promise<Profile> {
     throw new Error(error.message)
   }
 
-  return { fullName: data.full_name, role: data.role }
+  return {
+    fullName: data.full_name,
+    phoneNumber: data.phone_number,
+    role: data.role,
+  }
 }
 
 // Session to start the app with: the stored session from getSession(),

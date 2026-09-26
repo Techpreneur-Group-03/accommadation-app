@@ -6,7 +6,8 @@ export interface House {
   numberOfRoom: number
   peoplePerRoom: number
   pricePerRoom: number
-  rate: number
+  // Hidden for now; listings from Supabase don't include it.
+  rate?: number
   phoneNumber: string
   houseImage: string
 }

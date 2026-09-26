@@ -5,26 +5,21 @@ import { BrowserRouter } from "react-router-dom"
 import "./index.css"
 import { AuthProvider } from "@/components/auth-provider.tsx"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
-<<<<<<< HEAD
-import { HashRouter } from "@/components/hash-router"
-=======
+import { Toaster } from "@/components/ui/sonner.tsx"
+import { TooltipProvider } from "@/components/ui/tooltip.tsx"
 import { AppRoutes } from "@/routes.tsx"
->>>>>>> origin/main
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider defaultTheme="light">
-<<<<<<< HEAD
-      <HashRouter>
-        <App />
-      </HashRouter>
-=======
-      <BrowserRouter>
-        <AuthProvider>
-          <AppRoutes />
-        </AuthProvider>
-      </BrowserRouter>
->>>>>>> origin/main
+      <TooltipProvider>
+        <BrowserRouter>
+          <AuthProvider>
+            <AppRoutes />
+          </AuthProvider>
+        </BrowserRouter>
+        <Toaster richColors position="top-right" />
+      </TooltipProvider>
     </ThemeProvider>
   </StrictMode>
 )
