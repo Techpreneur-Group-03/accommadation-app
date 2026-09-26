@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { SearchX } from "lucide-react"
 
 import { CardInfo } from "@/components/CardInfo"
@@ -6,23 +5,15 @@ import type { House } from "@/data/sample-data"
 
 interface CardListingSectionProps {
   houses: House[]
+  favoriteIds: Set<number>
+  onToggleFavorite: (houseId: number) => void
 }
 
-export function CardListingSection({ houses }: CardListingSectionProps) {
-  const [favoriteIds, setFavoriteIds] = useState<Set<number>>(new Set())
-
-  const toggleFavorite = (houseId: number) => {
-    setFavoriteIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(houseId)) {
-        next.delete(houseId)
-      } else {
-        next.add(houseId)
-      }
-      return next
-    })
-  }
-
+export function CardListingSection({
+  houses,
+  favoriteIds,
+  onToggleFavorite,
+}: CardListingSectionProps) {
   return (
     <section className="w-full" aria-label="Accommodation listings">
       <div className="mb-6 flex items-center justify-between">
@@ -60,7 +51,7 @@ export function CardListingSection({ houses }: CardListingSectionProps) {
               phoneNumber={house.phoneNumber}
               ownerName={house.ownerName}
               isFavorite={favoriteIds.has(house.houseId)}
-              onToggleFavorite={() => toggleFavorite(house.houseId)}
+              onToggleFavorite={() => onToggleFavorite(house.houseId)}
             />
           ))}
         </div>
