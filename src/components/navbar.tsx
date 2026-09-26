@@ -1,6 +1,6 @@
 
 import { Home, Heart, Megaphone, Users, Bell, MessageSquareMore } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { UserProfileMenu } from "@/components/user-profile-menu"
 
 import { cn } from "@/lib/utils"
 
@@ -16,6 +16,8 @@ interface NavbarProps {
     onTabChange?: (id: string) => void
     onNotificationClick?: () => void
     onMessageClick?: () => void
+    /** Retained for API compatibility. The profile button now opens the auth
+     *  dropdown instead of calling this. */
     onProfileClick?: () => void
     notificationCount?: number
     messageCount?: number
@@ -28,7 +30,6 @@ export function Navbar({
     onTabChange,
     onNotificationClick,
     onMessageClick,
-    onProfileClick,
     notificationCount = 0,
     messageCount = 0,
     userAvatarSrc = "/avatar.jpg",
@@ -96,20 +97,11 @@ export function Navbar({
                         )}
                     </button>
 
-                    {/* Avatar */}
-                    <button
-                        type="button"
-                        onClick={onProfileClick}
-                        className="rounded-full transition-opacity hover:opacity-80"
-                        aria-label="Profile"
-                    >
-                        <Avatar className="size-9">
-                            <AvatarImage src={userAvatarSrc} alt="User avatar" />
-                            <AvatarFallback className="bg-emerald-100 text-emerald-700 font-semibold text-sm">
-                                {userInitials}
-                            </AvatarFallback>
-                        </Avatar>
-                    </button>
+                    {/* Profile / auth actions */}
+                    <UserProfileMenu
+                        avatarSrc={userAvatarSrc}
+                        initials={userInitials}
+                    />
                 </div>
             </div>
 
