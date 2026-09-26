@@ -52,7 +52,14 @@ export function App() {
       return next
     })
   }
+import { Route, Routes } from "react-router-dom"
 
+import { AppLayout } from "@/components/AppLayout"
+import { HouseDetailPage } from "@/pages/HouseDetailPage"
+import { HomePage } from "@/pages/HomePage"
+import { NotFoundPage } from "@/pages/NotFoundPage"
+
+export function App() {
   return (
     <div>
       <Navbar
@@ -99,6 +106,13 @@ export function App() {
 
       <Footer />
     </div>
+    <Routes>
+      <Route element={<AppLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/house/:houseId" element={<HouseDetailPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
   )
 }
 

@@ -1,4 +1,4 @@
-import type { House } from "@/data/sample-data"
+import type { House } from "@/types/house-type"
 
 // Values are kept as strings so number inputs can be empty.
 export interface SearchFilters {

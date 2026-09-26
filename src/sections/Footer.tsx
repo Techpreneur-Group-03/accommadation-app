@@ -56,7 +56,7 @@ export function Footer() {
                 <span className="text-orange-500">O</span>
                 <span className="text-emerald-600">V</span>
               </p>
-              <p className="mt-3 max-w-sm text-slate-500 text-sm leading-relaxed">
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-500">
                 Find your perfect place to stay. Browse thousands of verified
                 homes, apartments, and shared spaces across the city.
               </p>
@@ -78,7 +78,9 @@ export function Footer() {
             </ul>
 
             <div className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-[0_4px_20px_rgba(15,23,42,0.06)]">
-              <p className="text-sm font-semibold text-slate-900">Get property alerts</p>
+              <p className="text-sm font-semibold text-slate-900">
+                Get property alerts
+              </p>
               <form
                 className="flex flex-col gap-2 sm:flex-row"
                 onSubmit={(e) => e.preventDefault()}
@@ -102,7 +104,9 @@ export function Footer() {
           <div className="grid gap-8 sm:grid-cols-3">
             {linkGroups.map((group) => (
               <div key={group.title}>
-                <p className="text-sm font-semibold text-slate-900">{group.title}</p>
+                <p className="text-sm font-semibold text-slate-900">
+                  {group.title}
+                </p>
                 <ul className="mt-4 space-y-3 text-sm">
                   {group.links.map((link) => (
                     <li key={link}>
@@ -143,4 +147,4 @@ export function Footer() {
   )
 }
 
-export default Footer;
+export default Footer
