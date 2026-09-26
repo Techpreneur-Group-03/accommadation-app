@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react"
 import { LoaderCircle, Mail, Star, X } from "lucide-react"
-import { Link } from "react-router"
+import { Link } from "react-router-dom"
 
 import { AuthCard, AuthLayout } from "@/components/auth-layout"
 import { brandButtonClassName } from "@/components/field-styles"

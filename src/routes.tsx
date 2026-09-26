@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router"
+import { Navigate, Route, Routes } from "react-router-dom"
 
 import App from "@/App"
 import { GuestOnly, RequireRole } from "@/components/route-guards"

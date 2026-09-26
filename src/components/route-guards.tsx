@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { LoaderCircle } from "lucide-react"
-import { Navigate } from "react-router"
+import { Navigate } from "react-router-dom"
 
 import { useAuth } from "@/components/auth-provider"
 import { homePathForRole, type AppRole } from "@/lib/roles"
