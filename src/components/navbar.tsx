@@ -9,10 +9,16 @@ import {
 } from "lucide-react"
 import { Link } from "react-router-dom"
 
+<<<<<<< HEAD
+import { Home, Heart, Megaphone, Users, Bell, MessageSquareMore } from "lucide-react"
+import { UserProfileMenu } from "@/components/user-profile-menu"
+
+=======
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Logo } from "@/components/logo"
+>>>>>>> origin/main
 import { cn } from "@/lib/utils"
 
 const NAV_ITEMS = [
@@ -23,6 +29,30 @@ const NAV_ITEMS = [
 ]
 
 interface NavbarProps {
+<<<<<<< HEAD
+    activeTab?: string
+    onTabChange?: (id: string) => void
+    onNotificationClick?: () => void
+    onMessageClick?: () => void
+    /** Retained for API compatibility. The profile button now opens the auth
+     *  dropdown instead of calling this. */
+    onProfileClick?: () => void
+    notificationCount?: number
+    messageCount?: number
+    userAvatarSrc?: string
+    userInitials?: string
+}
+
+export function Navbar({
+    activeTab = "home",
+    onTabChange,
+    onNotificationClick,
+    onMessageClick,
+    notificationCount = 0,
+    messageCount = 0,
+    userAvatarSrc = "/avatar.jpg",
+    userInitials = "LN",
+=======
   activeTab?: string
   onTabChange?: (id: string) => void
   onNotificationClick?: () => void
@@ -50,6 +80,7 @@ export function Navbar({
   messageCount = 0,
   userAvatarSrc = "/avatar.jpg",
   userInitials = "LN",
+>>>>>>> origin/main
 }: NavbarProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
@@ -102,6 +133,13 @@ export function Navbar({
             )}
           </button>
 
+<<<<<<< HEAD
+                    {/* Profile / auth actions */}
+                    <UserProfileMenu
+                        avatarSrc={userAvatarSrc}
+                        initials={userInitials}
+                    />
+=======
           <button
             type="button"
             onClick={onMessageClick}
@@ -135,6 +173,7 @@ export function Navbar({
                       {userEmail}
                     </p>
                   )}
+>>>>>>> origin/main
                 </div>
                 <Button variant="outline" onClick={onLogout}>
                   <LogOut />
