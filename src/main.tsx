@@ -3,15 +3,18 @@ import { createRoot } from "react-dom/client"
 import { BrowserRouter } from "react-router-dom"
 
 import "./index.css"
-import App from "./App.tsx"
+import { AuthProvider } from "@/components/auth-provider.tsx"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
+import { AppRoutes } from "@/routes.tsx"
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
-      <ThemeProvider defaultTheme="light">
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
+    <ThemeProvider defaultTheme="light">
+      <BrowserRouter>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   </StrictMode>
 )

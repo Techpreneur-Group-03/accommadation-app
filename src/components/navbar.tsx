@@ -1,14 +1,18 @@
-import { Link } from "react-router-dom"
 import {
-  Home,
-  Heart,
-  Megaphone,
-  Users,
   Bell,
+  Heart,
+  Home,
+  LogOut,
+  Megaphone,
   MessageSquareMore,
+  Users,
 } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Link } from "react-router-dom"
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Logo } from "@/components/logo"
 import { cn } from "@/lib/utils"
 
 const NAV_ITEMS = [
@@ -23,7 +27,10 @@ interface NavbarProps {
   onTabChange?: (id: string) => void
   onNotificationClick?: () => void
   onMessageClick?: () => void
-  onProfileClick?: () => void
+  onLogout?: () => void
+  isAuthenticated?: boolean
+  userName?: string
+  userEmail?: string
   notificationCount?: number
   messageCount?: number
   userAvatarSrc?: string
@@ -35,7 +42,10 @@ export function Navbar({
   onTabChange,
   onNotificationClick,
   onMessageClick,
-  onProfileClick,
+  onLogout,
+  isAuthenticated = false,
+  userName,
+  userEmail,
   notificationCount = 0,
   messageCount = 0,
   userAvatarSrc = "/avatar.jpg",
@@ -44,14 +54,8 @@ export function Navbar({
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
       <div className="mx-auto flex min-h-18 max-w-7xl items-center justify-between px-4 sm:px-6">
-        {/* Logo */}
-        <Link to="/" aria-label="SBOV home" className="text-3xl font-bold">
-          <span className="text-emerald-600">SB</span>
-          <span className="text-orange-500">O</span>
-          <span className="text-emerald-600">V</span>
-        </Link>
+        <Logo />
 
-        {/* Nav Links */}
         <nav className="hidden items-center gap-1 md:flex">
           {NAV_ITEMS.map(({ id, label, icon: Icon, to }) => {
             const isActive = activeTab === id
@@ -85,9 +89,7 @@ export function Navbar({
           })}
         </nav>
 
-        {/* Right side */}
         <div className="flex items-center gap-2">
-          {/* Notification */}
           <button
             type="button"
             onClick={onNotificationClick}
@@ -100,7 +102,6 @@ export function Navbar({
             )}
           </button>
 
-          {/* Messages */}
           <button
             type="button"
             onClick={onMessageClick}
@@ -113,24 +114,46 @@ export function Navbar({
             )}
           </button>
 
-          {/* Avatar */}
-          <button
-            type="button"
-            onClick={onProfileClick}
-            className="rounded-full transition-opacity hover:opacity-80"
-            aria-label="Profile"
-          >
-            <Avatar className="size-9">
-              <AvatarImage src={userAvatarSrc} alt="User avatar" />
-              <AvatarFallback className="bg-emerald-100 text-sm font-semibold text-emerald-700">
-                {userInitials}
-              </AvatarFallback>
-            </Avatar>
-          </button>
+          {isAuthenticated ? (
+            <Popover>
+              <PopoverTrigger
+                className="rounded-full transition-opacity hover:opacity-80"
+                aria-label="Account menu"
+              >
+                <Avatar className="size-9">
+                  <AvatarImage src={userAvatarSrc} alt="User avatar" />
+                  <AvatarFallback className="bg-emerald-100 text-sm font-semibold text-emerald-700">
+                    {userInitials}
+                  </AvatarFallback>
+                </Avatar>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-60 gap-3">
+                <div className="min-w-0">
+                  {userName && <p className="truncate font-medium">{userName}</p>}
+                  {userEmail && (
+                    <p className="truncate text-xs text-muted-foreground">
+                      {userEmail}
+                    </p>
+                  )}
+                </div>
+                <Button variant="outline" onClick={onLogout}>
+                  <LogOut />
+                  Log out
+                </Button>
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <Button
+              render={<Link to="/login" />}
+              nativeButton={false}
+              className="h-9 rounded-lg bg-brand px-4 text-brand-foreground hover:bg-brand/90"
+            >
+              Login
+            </Button>
+          )}
         </div>
       </div>
 
-      {/* Mobile Nav */}
       <div className="flex gap-1 overflow-x-auto border-t px-4 py-2 md:hidden">
         {NAV_ITEMS.map(({ id, label, icon: Icon, to }) => {
           const isActive = activeTab === id
