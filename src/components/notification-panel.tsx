@@ -1,4 +1,10 @@
-import { Bell, CheckCheck, CircleDot, MessageSquareText, Search } from "lucide-react"
+import {
+  Bell,
+  CheckCheck,
+  CircleDot,
+  MessageSquareText,
+  Search,
+} from "lucide-react"
 
 const notifications = [
   {
@@ -120,14 +126,16 @@ export function NotificationPanel() {
         </button>
       </div>
 
-      <div className="max-h-[70vh] overflow-y-auto bg-[#dfeae8] px-3 pb-4 pt-3">
+      <div className="max-h-[70vh] overflow-y-auto bg-[#dfeae8] px-3 pt-3 pb-4">
         {groups.map((group) => {
-          const groupItems = notifications.filter((item) => item.group === group)
+          const groupItems = notifications.filter(
+            (item) => item.group === group
+          )
           if (!groupItems.length) return null
 
           return (
             <div key={group} className="mb-2">
-              <h4 className="px-3 pb-2 pt-3 text-[1.05rem] font-bold text-slate-700">
+              <h4 className="px-3 pt-3 pb-2 text-[1.05rem] font-bold text-slate-700">
                 {group}
               </h4>
 
@@ -136,24 +144,35 @@ export function NotificationPanel() {
                   <div
                     key={item.id}
                     className={`flex items-center gap-3 rounded-[1.4rem] border border-slate-200/80 bg-[#eaf3f2] px-3 py-3 ${
-                      item.unread ? "shadow-[inset_0_0_0_1px_rgba(16,185,129,0.08)]" : ""
+                      item.unread
+                        ? "shadow-[inset_0_0_0_1px_rgba(16,185,129,0.08)]"
+                        : ""
                     }`}
                   >
-                    <AvatarBadge label={item.name.slice(0, 2)} accent={item.accent} />
+                    <AvatarBadge
+                      label={item.name.slice(0, 2)}
+                      accent={item.accent}
+                    />
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <p className="truncate text-[1.1rem] font-bold text-slate-800">
                           {item.name}
                         </p>
-                        <span className="text-lg text-slate-800">requested</span>
+                        <span className="text-lg text-slate-800">
+                          requested
+                        </span>
                       </div>
 
-                      <p className="mt-1 truncate text-base text-slate-600">{item.preview}</p>
+                      <p className="mt-1 truncate text-base text-slate-600">
+                        {item.preview}
+                      </p>
                       <p className="mt-1 text-sm text-slate-500">{item.time}</p>
                     </div>
 
-                    {item.unread && <CircleDot className="h-3 w-3 fill-emerald-500 text-emerald-500" />}
+                    {item.unread && (
+                      <CircleDot className="h-3 w-3 fill-emerald-500 text-emerald-500" />
+                    )}
                   </div>
                 ))}
               </div>
@@ -193,14 +212,23 @@ export function MessagePanel() {
               type="button"
               className="flex w-full items-center gap-3 rounded-[1.5rem] border border-slate-200/80 bg-[#eaf3f2] px-3 py-3 text-left transition-transform hover:-translate-y-0.5 hover:bg-[#edf7f5]"
             >
-              <AvatarBadge label={message.name.slice(0, 2)} accent={message.accent} />
+              <AvatarBadge
+                label={message.name.slice(0, 2)}
+                accent={message.accent}
+              />
 
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="truncate text-[1.12rem] font-bold text-slate-800">{message.name}</p>
-                  <span className="text-xs font-medium text-slate-500">{message.time}</span>
+                  <p className="truncate text-[1.12rem] font-bold text-slate-800">
+                    {message.name}
+                  </p>
+                  <span className="text-xs font-medium text-slate-500">
+                    {message.time}
+                  </span>
                 </div>
-                <p className="mt-1 truncate text-base text-slate-600">{message.preview}</p>
+                <p className="mt-1 truncate text-base text-slate-600">
+                  {message.preview}
+                </p>
               </div>
             </button>
           ))}

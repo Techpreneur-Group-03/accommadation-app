@@ -15,8 +15,8 @@ export function CardListingSection({
   onToggleFavorite,
 }: CardListingSectionProps) {
   return (
-    <section className="w-full  " aria-label="Accommodation listings">
-      <div className="mb-6 mx-10 flex items-center justify-between">
+    <section className="w-full" aria-label="Accommodation listings">
+      <div className="mx-10 mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-slate-900">
           Available Accommodations
         </h1>
@@ -39,7 +39,7 @@ export function CardListingSection({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 mx-10 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mx-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {houses.map((house) => (
             <CardInfo
               key={house.houseId}
