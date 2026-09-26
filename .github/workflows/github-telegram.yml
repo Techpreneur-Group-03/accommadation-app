@@ -1,4 +1,4 @@
-name: GitHub Activity → Telegram
+name: Telegram GitHub Notification
 
 on:
   push:
@@ -8,34 +8,38 @@ on:
   pull_request_review:
   pull_request_review_comment:
   release:
-  create:
-  delete:
-  fork:
-  watch:
-  workflow_run:
-  deployment:
-  deployment_status:
 
 jobs:
   notify:
+    environment: Telegram Github Action
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send GitHub activity to Telegram
+      - name: Send Telegram notification
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_THREAD_ID: ${{ secrets.TELEGRAM_THREAD_ID }}
+          REPOSITORY: ${{ github.repository }}
+          BRANCH: ${{ github.head_ref || github.ref_name || 'N/A' }}
+          USER: ${{ github.actor }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message || github.event.pull_request.title || github.event.issue.title || github.event.release.name || 'N/A' }}
+          EVENT_URL: ${{ github.event.head_commit.url || github.event.pull_request.html_url || github.event.issue.html_url || github.event.release.html_url || github.server_url }}
+          COMMIT_SHA: ${{ github.sha }}
         run: |
-          MESSAGE="🔔 GitHub Activity
+          set -euo pipefail
 
-          Repository: ${{ github.repository }}
-          Event: ${{ github.event_name }}
-          Actor: ${{ github.actor }}
-          Branch: ${{ github.ref_name }}
+          SHORT_SHA="${COMMIT_SHA:0:7}"
 
-          View: https://github.com/${{ github.repository }}"
+          MESSAGE=$(printf '🔔 %s\n🌿 %s • 👤 %s\n\nCommit: %s\n\n🔗 %s' \
+            "$REPOSITORY" \
+            "$BRANCH" \
+            "$USER" \
+            "$COMMIT_MESSAGE" \
+            "$SHORT_SHA")
 
-          curl -s -X POST \
+          curl --fail --silent --show-error -X POST \
             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-            -d "chat_id=${TELEGRAM_CHAT_ID}" \
-            --data-urlencode "text=${MESSAGE}"
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=${MESSAGE}" \
+            --data-urlencode "message_thread_id=${TELEGRAM_THREAD_ID}"
