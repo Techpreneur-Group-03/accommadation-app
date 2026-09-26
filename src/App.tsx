@@ -5,7 +5,7 @@ import { CardListingSection } from "@/sections/CardListingSection"
 import Footer from "@/sections/Footer"
 import { emptySearchFilters, filterHouses } from "@/lib/filter-houses"
 import { fetchHouses } from "@/services/houses"
-import type { House } from "@/data/sample-data"
+import type { House } from "@/types/house-type"
 
 export function App() {
   const [tab, setTab] = useState("home")
@@ -56,7 +56,9 @@ export function App() {
 
       <div className="container mx-auto px-24 py-12">
         {isLoading ? (
-          <p className="py-16 text-center text-slate-500">Loading listings...</p>
+          <p className="py-16 text-center text-slate-500">
+            Loading listings...
+          </p>
         ) : error ? (
           <div role="alert" className="py-16 text-center">
             <p className="text-lg font-semibold text-slate-900">

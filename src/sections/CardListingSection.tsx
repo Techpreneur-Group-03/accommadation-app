@@ -2,7 +2,7 @@ import { useState } from "react"
 import { SearchX } from "lucide-react"
 
 import { CardInfo } from "@/components/CardInfo"
-import type { House } from "@/data/sample-data"
+import type { House } from "@/types/house-type"
 
 interface CardListingSectionProps {
   houses: House[]
@@ -58,6 +58,7 @@ export function CardListingSection({ houses }: CardListingSectionProps) {
               pricePerRoom={house.pricePerRoom}
               rate={house.rate}
               phoneNumber={house.phoneNumber}
+              houseImage={house.houseImage}
               ownerName={house.ownerName}
               isFavorite={favoriteIds.has(house.houseId)}
               onToggleFavorite={() => toggleFavorite(house.houseId)}

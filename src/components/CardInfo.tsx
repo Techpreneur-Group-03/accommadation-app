@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+
 import { cn } from '@/lib/utils'
 
 interface CardInfoProps {
@@ -17,6 +18,7 @@ interface CardInfoProps {
   pricePerRoom: number
   rate: number
   phoneNumber: string
+  houseImage: string
   ownerName?: string
   isFavorite: boolean
   onToggleFavorite: () => void
@@ -29,13 +31,25 @@ export function CardInfo({
   pricePerRoom,
   rate,
   phoneNumber,
+  houseImage,
   ownerName = 'Unknown',
   isFavorite,
   onToggleFavorite,
 }: CardInfoProps) {
   return (
     <article className="w-full max-w-90 flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
-      <div className="relative h-50 bg-cover bg-center" aria-label="House exterior" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80')" }}>
+      <div className="relative h-50 shrink-0 overflow-hidden bg-slate-200">
+        <img
+          src={houseImage}
+          alt={`Exterior of ${houseName}`}
+          loading="lazy"
+          decoding="async"
+          onError={(event) => {
+            const img = event.currentTarget
+            if (img.src !== "https://via.placeholder.com/400x300?text=No+Image") img.src = "https://via.placeholder.com/400x300?text=No+Image"
+          }}
+          className="h-full w-full object-cover"
+        />
         <Button
           type="button"
           size="icon"
