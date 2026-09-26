@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useAuth } from "@/components/auth-provider"
 import { Navbar } from "@/components/navbar"
 import { SearchFilterSection } from "@/sections/search-filter-section"
 import { CardListingSection } from "@/sections/CardListingSection"
@@ -7,7 +8,18 @@ import { emptySearchFilters, filterHouses } from "@/lib/filter-houses"
 import { fetchHouses } from "@/services/houses"
 import type { House } from "@/data/sample-data"
 
+function getInitials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join("")
+}
+
 export function App() {
+  const { session, user, profile, signOut } = useAuth()
+  const userName = profile?.fullName ?? user?.email ?? ""
   const [tab, setTab] = useState("home")
   const [filters, setFilters] = useState(emptySearchFilters)
   const [houses, setHouses] = useState<House[]>([])
@@ -47,7 +59,15 @@ export function App() {
         messageCount={2}
         onNotificationClick={() => alert("notifications!")}
         onMessageClick={() => alert("messages!")}
-        onProfileClick={() => alert("profile!")}
+        isAuthenticated={session !== null}
+        userName={profile?.fullName ?? undefined}
+        userEmail={user?.email}
+        userInitials={getInitials(userName)}
+        onLogout={() => {
+          signOut().catch((err: unknown) =>
+            console.error("Failed to log out:", err)
+          )
+        }}
       />
 
       <div className="container mx-auto px-24 pt-8">
